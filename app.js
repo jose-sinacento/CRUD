@@ -42,14 +42,38 @@ app.post('/usuarios', (req, res) => {
         id: usuarios.length +1,
         nombre: req.body.nombre,
         edad: req.body.edad,
-        lugarProcedencia: req.body.lugarProcedencia,
+        lugarProcedencia: req.body.lugarProcedencia
     };
     usuarios.push(newUser);
     res.redirect('/');
 })
 
-const port = 3000
+//RUTA PARA UN SOLO USUARIO
+app.get("/usuarios/:nombre", (req, res) => {
+    const nombre = req.params.nombre;
+    const usuario = usuarios.find(user => user.nombre === nombre);
+
+    if(!usuario) {
+        res.status(404).json({mensaje: "usuario no encontrado"})
+    } else {
+        res.json(usuario)
+    }
+})
+/* Corrección de Sori
+app.put('/usuarios/:nombre', (req, res) => {
+    const nombreUsuario = req.params.nombre;
+    const index = usuarios.findIndex(usuario => usuario.nombre === nombre) 
+    if (index !== -1) {
+        usuarios[index] = {id: usuarios[index].id, ...req.body}
+        res.json(usuarios)
+    } else {
+        res.status(404).json({mensaje: "usuario no encontrado"})
+    }
+});
+*/
+
+const port = 3000;
 app.listen(3000, () => {
-    console.log(`Express está escuchando en el puerto ${port}`);
+    console.log(`Express está escuchando en el puerto http://localhost:${port}`);
 });
 
